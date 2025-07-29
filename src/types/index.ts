@@ -1,10 +1,12 @@
+import type { Ref } from 'vue'
+
 // Core habit data structure
 export interface Habit {
     id: number
     name: string
     createdDate: string
     stopDate?: string
-    resumeDate?: string
+    resumeDate?: string | null
   }
 
 // Completed habits tracking by date
@@ -14,8 +16,8 @@ export interface CompletedHabitsByDay {
 
 // Habit store state
 export interface HabitStore {
-    habits: Habit[]
-    completedHabitsByDay: CompletedHabitsByDay
+    habits: Ref<Habit[]>
+    completedHabitsByDay: Ref<CompletedHabitsByDay>
   }
 
 // Form data for creating/editing habits

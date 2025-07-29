@@ -1,34 +1,35 @@
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import type { Habit, HabitStore, HabitEditData, DateString} from '@/types';
 
-export default function useHabits(habitStore) {
+export default function useHabits(habitStore: HabitStore) {
   const { habits, completedHabitsByDay } = habitStore;
-  const showAddHabitMode = ref(false);
-  const newHabitName = ref('');
-  const error = ref('');
-  const success = ref('');
-  const loading = ref(false);
+  const showAddHabitMode = ref<boolean>(false);
+  const newHabitName = ref<string>('');
+  const error = ref<string>('');
+  const success = ref<string>('');
+  const loading = ref<boolean>(false);
   const route = useRoute();
 
-  const selectedDate = ref(
-    route.params.date || new Date().toISOString().slice(0, 10),
+  const selectedDate = ref<DateString>(
+    route.params.date as string || new Date().toISOString().slice(0, 10),
   );
 
   // Keep selectedDate in sync with the route
   watch(
     () => route.params.date,
     newDate => {
-      selectedDate.value = newDate || new Date().toISOString().slice(0, 10);
+      selectedDate.value = (newDate as string) || new Date().toISOString().slice(0, 10);
     },
     { immediate: true },
   );
 
-  function completedHabits() {
+  function completedHabits(): number[] {
     return completedHabitsByDay.value[selectedDate.value] || [];
   }
 
   // Computed; isFutureDay
-  function isFutureDay() {
+  function isFutureDay(): boolean {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const sel = new Date(selectedDate.value);
@@ -36,15 +37,15 @@ export default function useHabits(habitStore) {
     return sel > today;
   }
 
-  function isDuplicateHabitName(name, excludeId = null) {
+  function isDuplicateHabitName(name: string, excludeId: number | null = null): boolean {
     return habits.value.some(
-      h =>
+      (h: Habit) =>
         h.name.trim().toLowerCase() === name.trim().toLowerCase() &&
         h.id !== excludeId,
     );
   }
 
-  function validateHabitName(name, excludeId = null) {
+  function validateHabitName(name: string, excludeId: number | null = null): string {
     const trimmedName = name.trim();
     if (!trimmedName) {
       return 'Habit name cannot be empty';
@@ -55,7 +56,7 @@ export default function useHabits(habitStore) {
     return '';
   }
 
-  function addHabit() {
+  function addHabit(): void {
     const name = newHabitName.value;
     error.value = validateHabitName(name);
     if (error.value) {
@@ -88,7 +89,7 @@ export default function useHabits(habitStore) {
     }
   }
 
-  function editHabit({ id, name }) {
+  function editHabit({ id, name }: HabitEditData): void {
     error.value = validateHabitName(name, id);
     if (error.value) {
       setTimeout(() => {
@@ -97,7 +98,7 @@ export default function useHabits(habitStore) {
       return;
     }
 
-    const habit = habits.value.find(h => h.id === id);
+    const habit = habits.value.find((h: Habit) => h.id === id);
     if (habit) {
       habit.name = name.trim();
       success.value = 'Habit updated successfully';
@@ -107,8 +108,8 @@ export default function useHabits(habitStore) {
     }
   }
 
-  function stopHabit(id) {
-    const habit = habits.value.find(h => h.id === id);
+  function stopHabit(id: number): void {
+    const habit = habits.value.find((h: Habit) => h.id === id);
     if (habit) {
       habit.stopDate = selectedDate.value;
       habit.resumeDate = null;
@@ -119,8 +120,8 @@ export default function useHabits(habitStore) {
     }
   }
 
-  function resumeHabit(id) {
-    const habit = habits.value.find(h => h.id === id);
+  function resumeHabit(id: number): void {
+    const habit = habits.value.find((h: Habit) => h.id === id);
     if (habit) {
       habit.resumeDate = selectedDate.value;
       success.value = 'Habit resumed successfully';
@@ -130,28 +131,28 @@ export default function useHabits(habitStore) {
     }
   }
 
-  function isHabitStoppedOnDate(habit, date) {
+  function isHabitStoppedOnDate(habit: Habit, date: DateString): boolean {
     if (!habit.stopDate) return false;
     if (habit.resumeDate && date >= habit.resumeDate) return false;
     return date >= habit.stopDate;
   }
 
-  function deleteHabit(id) {
+  function deleteHabit(id: number): void {
     // Force reactivity by creating a new array
-    habits.value = [...habits.value.filter(h => h.id !== id)];
+    habits.value = [...habits.value.filter((h: Habit) => h.id !== id)];
 
     // Clean up completion records
-    Object.keys(completedHabitsByDay.value).forEach(date => {
+    Object.keys(completedHabitsByDay.value).forEach((date: string) => {
       if (completedHabitsByDay.value[date]) {
         completedHabitsByDay.value[date] = completedHabitsByDay.value[
           date
-        ].filter(hid => hid !== id);
+        ].filter((hid: number) => hid !== id);
       }
     });
   }
 
   // toggle habit completion fo the selected day
-  function toggleHabit(id) {
+  function toggleHabit(id: number): void {
     const date = selectedDate.value;
     if (!completedHabitsByDay.value[date]) {
       completedHabitsByDay.value[date] = [];
@@ -161,7 +162,7 @@ export default function useHabits(habitStore) {
       // Uncheck
       completedHabitsByDay.value[date] = completedHabitsByDay.value[
         date
-      ].filter(hid => hid !== id);
+      ].filter((hid: number) => hid !== id);
     } else {
       // Check
       completedHabitsByDay.value[date].push(id);
