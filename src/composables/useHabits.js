@@ -58,7 +58,12 @@ export default function useHabits(habitStore) {
   function addHabit() {
     const name = newHabitName.value;
     error.value = validateHabitName(name);
-    if (error.value) return;
+    if (error.value) {
+      setTimeout(() => {
+        error.value = '';
+      }, 3000);
+      return;
+    }
 
     try {
       loading.value = true;
@@ -75,6 +80,9 @@ export default function useHabits(habitStore) {
       }, 3000);
     } catch (err) {
       error.value = 'Failed to add habit';
+      setTimeout(() => {
+        error.value = '';
+      }, 3000);
     } finally {
       loading.value = false;
     }
