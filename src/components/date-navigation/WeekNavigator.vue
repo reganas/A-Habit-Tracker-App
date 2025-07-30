@@ -19,43 +19,50 @@
   </div>
 </template>
 
-<script setup>
-import { computed } from 'vue';
-import { useRouter } from 'vue-router';
-import appConfig from '../../config/appConfig';
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import type { DateString } from '@/types'
+import appConfig from '../../config/appConfig'
 
-const props = defineProps({
-  currentDate: {
-    type: String,
-    default: '',
-  },
-  today: {
-    type: String,
-    default: '',
-  },
-  weekStartsOn: {
-    type: Number,
-    default: 0,
-  },
-});
+interface Props {
+  currentDate: DateString
+  today: DateString
+  weekStartsOn: number
+}
 
-const router = useRouter();
+const props = withDefaults(defineProps<Props>(), {
+  currentDate: '',
+  today: '',
+  weekStartsOn: 0,
+})
 
-const weekDays = computed(() => {
-  const isMobile = window.innerWidth <= 768;
-  const current = new Date(props.currentDate);
+const router = useRouter()
+
+interface WeekDay {
+  date: DateString
+  name: string
+  dayNumber: number
+  isToday: boolean
+  isFuture: boolean
+  isWeekend?: boolean
+}
+
+const weekDays = computed((): WeekDay[] => {
+  const isMobile = window.innerWidth <= 768
+  const current = new Date(props.currentDate)
 
   if (isMobile) {
     // Show 5 days: current day ± 2 days
-    const days = [];
+    const days: WeekDay[] = []
     for (let i = -2; i <= 2; i += 1) {
-      const date = new Date(current);
-      date.setDate(current.getDate() + i);
-      const dateStr = date.toISOString().slice(0, 10);
+      const date = new Date(current)
+      date.setDate(current.getDate() + i)
+      const dateStr = date.toISOString().slice(0, 10) as DateString
       const dayName = date.toLocaleDateString(appConfig.locale, {
         weekday: 'short',
-      });
-      const dayNumber = date.getDate();
+      })
+      const dayNumber = date.getDate()
 
       days.push({
         date: dateStr,
@@ -63,27 +70,27 @@ const weekDays = computed(() => {
         dayNumber,
         isToday: dateStr === props.today,
         isFuture: dateStr > props.today,
-      });
+      })
     }
-    return days;
+    return days
   }
 
   // Desktop: show full week
-  const startOfWeek = new Date(current);
-  const dayOfWeek = current.getDay();
-  const diff = props.weekStartsOn - dayOfWeek;
-  startOfWeek.setDate(current.getDate() + diff);
+  const startOfWeek = new Date(current)
+  const dayOfWeek = current.getDay()
+  const diff = props.weekStartsOn - dayOfWeek
+  startOfWeek.setDate(current.getDate() + diff)
 
-  const allDays = Array.from({ length: 7 }, (_, i) => {
-    const date = new Date(startOfWeek);
-    date.setDate(startOfWeek.getDate() + i);
-    const dateStr = date.toISOString().slice(0, 10);
+  const allDays: WeekDay[] = Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(startOfWeek)
+    date.setDate(startOfWeek.getDate() + i)
+    const dateStr = date.toISOString().slice(0, 10) as DateString
     const dayName = date.toLocaleDateString(appConfig.locale, {
       weekday: 'short',
-    });
-    const dayNumber = date.getDate();
-    const dayOfWeekForDay = date.getDay();
-    const isWeekend = dayOfWeekForDay === 0 || dayOfWeek === 6;
+    })
+    const dayNumber = date.getDate()
+    const dayOfWeekForDay = date.getDay()
+    const isWeekend = dayOfWeekForDay === 0 || dayOfWeekForDay === 6
 
     return {
       date: dateStr,
@@ -92,17 +99,16 @@ const weekDays = computed(() => {
       isToday: dateStr === props.today,
       isFuture: dateStr > props.today,
       isWeekend,
-    };
-  });
+    }
+  })
 
   return appConfig.showWeekends
     ? allDays
-    : allDays.filter(day => !day.isWeekend);
-});
+    : allDays.filter((day: WeekDay) => !day.isWeekend)
+})
 
-function goToDate(date) {
-  if (date > props.today) return;
-  router.push({ path: `/day/${date}` });
+function goToDate(date: DateString): void {
+  router.push({ path: `/day/${date}` })
 }
 </script>
 

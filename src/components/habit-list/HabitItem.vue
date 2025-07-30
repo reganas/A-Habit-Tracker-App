@@ -84,52 +84,62 @@
   </li>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from 'vue';
+import type { Habit, HabitEditData } from '@/types';
 import StatusMessage from './StatusMessage.vue';
 import HabitActions from './HabitActions.vue';
 import StopDeleteConfirmation from './StopDeleteConfirmation.vue';
 
-const props = defineProps({
-  habit: {
-    type: Object,
-    default: () => ({}),
-  },
-  completed: Boolean,
-  disabled: Boolean,
-  isStopped: Boolean,
+interface Props {
+  habit: Habit;
+  completed: boolean;
+  disabled: boolean;
+  isStopped: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  completed: false,
+  disabled: false,
+  isStopped: false,
 });
 
-const emit = defineEmits(['toggle', 'edit', 'stop', 'delete', 'resume']);
+const emit = defineEmits<{
+  toggle: [habitId: number];
+  edit: [data: HabitEditData];
+  stop: [habitId: number];
+  delete: [habitId: number];
+  resume: [habitId: number];
+}>();
 
-const editing = ref(false);
-const editName = ref(props.habit.name);
-const showDeleteModal = ref(false);
-const showStopModal = ref(false);
-const isDuplicate = ref(false);
+const editing = ref<boolean>(false);
+const editName = ref<string>(props.habit.name);
+const showDeleteModal = ref<boolean>(false);
+const showStopModal = ref<boolean>(false);
+const isDuplicate = ref<boolean>(false);
 
 watch(
   () => props.habit.name,
-  newName => {
+  (newName: string) => {
     editName.value = newName;
   },
 );
 
-function deleteHabit() {
+function deleteHabit(): void {
   emit('delete', props.habit.id);
   showDeleteModal.value = false;
 }
 
-function stopHabit() {
+function stopHabit(): void {
   emit('stop', props.habit.id);
   showStopModal.value = false;
 }
 
-function onToggle() {
+function onToggle(): void {
   emit('toggle', props.habit.id);
 }
 
-function trySaveEdit() {
+function trySaveEdit(): void {
   if (!editName.value.trim()) {
     return;
   }
@@ -142,7 +152,7 @@ function trySaveEdit() {
   editing.value = false;
 }
 
-function cancelEdit() {
+function cancelEdit(): void {
   editing.value = false;
   isDuplicate.value = false;
 }

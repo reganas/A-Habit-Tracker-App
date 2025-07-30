@@ -1,30 +1,33 @@
-<script setup>
+<script setup lang="ts">
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import type { DateString } from '@/types';
 import appConfig from '../../config/appConfig';
 
-const props = defineProps({
-  currentDate: {
-    type: String,
-    default: () => new Date().toISOString().slice(0, 10),
-  },
-});
-const router = useRouter();
-const date = ref(new Date(props.currentDate));
+interface Props {
+  currentDate: DateString
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  currentDate: () => new Date().toISOString().slice(0, 10),
+})
+
+const router = useRouter()
+const date = ref<Date>(new Date(props.currentDate))
 
 // Keep date in sync if prop changes
 watch(
   () => props.currentDate,
-  val => {
-    if (val) date.value = new Date(val);
+  (val: DateString) => {
+    if (val) date.value = new Date(val)
   },
-);
+)
 
-function onDateSelect(val) {
+function onDateSelect(val: Date | null): void {
   if (val && val <= new Date()) {
-    router.push({ path: `/day/${val.toISOString().slice(0, 10)}` });
+    router.push({ path: `/day/${val.toISOString().slice(0, 10)}` })
   }
 }
 </script>

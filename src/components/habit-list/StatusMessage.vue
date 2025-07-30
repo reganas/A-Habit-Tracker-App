@@ -13,8 +13,20 @@
   </span>
 </template>
 
-<script setup>
-defineProps({
-  completed: Boolean,
-});
+<script setup lang="ts">
+import type { Habit } from '@/types';
+
+interface Props {
+  habit: Habit
+  isStopped: boolean
+}
+
+defineProps<Props>();
+
+defineEmits<{
+  edit: []
+  stop: []
+  delete: []
+  resume: []
+}>();
 </script>

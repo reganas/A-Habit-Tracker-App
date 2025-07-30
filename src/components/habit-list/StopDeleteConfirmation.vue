@@ -8,24 +8,12 @@
   </div>
 </template>
 
-<script setup>
-defineProps({
-  visible: Boolean,
-  message: {
-    type: String,
-    default: '',
-  },
-});
-
-const emit = defineEmits(['confirm', 'cancel']);
-
-function confirmAction() {
-  emit('confirm');
+<script setup lang="ts">
+interface Props {
+  completed: boolean;
 }
 
-function cancelAction() {
-  emit('cancel');
-}
+defineProps<Props>();
 </script>
 
 <style scoped>

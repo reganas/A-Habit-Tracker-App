@@ -22,30 +22,31 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import CalendarNavigation from './CalendarNavigation.vue';
-import WeekNavigator from './WeekNavigator.vue';
-import appConfig from '../../config/appConfig';
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import type { DateString } from '@/types'
+import CalendarNavigation from './CalendarNavigation.vue'
+import WeekNavigator from './WeekNavigator.vue'
+import appConfig from '../../config/appConfig'
 
-const route = useRoute();
-const router = useRouter();
+const route = useRoute()
+const router = useRouter()
 
-const today = ref(new Date().toISOString().slice(0, 10));
-const currentDate = ref(route.params.date || today.value);
+const today = ref<DateString>(new Date().toISOString().slice(0, 10))
+const currentDate = ref<DateString>((route.params.date as string) || today.value)
 
-const isNextDayFuture = computed(() => {
-  const current = new Date(currentDate.value);
-  const next = new Date(current);
-  next.setDate(current.getDate() + 1);
-  const nextDateStr = next.toISOString().slice(0, 10);
-  return nextDateStr > today.value;
-});
+const isNextDayFuture = computed((): boolean => {
+  const current = new Date(currentDate.value)
+  const next = new Date(current)
+  next.setDate(current.getDate() + 1)
+  const nextDateStr = next.toISOString().slice(0, 10)
+  return nextDateStr > today.value
+})
 
 // Format the selected date for display
-const formattedSelectedDate = computed(() => {
-  const date = new Date(currentDate.value);
+const formattedSelectedDate = computed((): string => {
+  const date = new Date(currentDate.value)
   
   try {
     return date.toLocaleDateString(appConfig.locale, {
@@ -53,7 +54,7 @@ const formattedSelectedDate = computed(() => {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
-    });
+    })
   } catch (error) {
     // Fallback to a simple format if locale fails
     return date.toLocaleDateString('en-US', {
@@ -61,57 +62,53 @@ const formattedSelectedDate = computed(() => {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
-    });
+    })
   }
-});
+})
 
-function getTodayString() {
-  return new Date().toISOString().slice(0, 10);
+function getTodayString(): DateString {
+  return new Date().toISOString().slice(0, 10)
 }
 
-function isValidDateString(dateStr) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return false;
-  const date = new Date(dateStr);
+function isValidDateString(dateStr: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return false
+  const date = new Date(dateStr)
   return (
     !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === dateStr
-  );
+  )
 }
 
 // Watch for route changes to keep `currentDate` in sync
 watch(
   () => route.params.date,
-  newDate => {
-    const dateToUse = newDate || getTodayString();
+  (newDate: string | string[] | undefined) => {
+    const dateToUse = (newDate as string) || getTodayString()
     if (!isValidDateString(dateToUse) || dateToUse > today.value) {
-      router.replace({ path: '/' });
-      return;
+      router.replace({ path: '/' })
+      return
     }
-    currentDate.value = dateToUse;
+    currentDate.value = dateToUse
   },
   { immediate: true },
-);
+)
 
 // Navigation functions
-function goToPreviousDay() {
-  const current = new Date(currentDate.value);
-  const prev = new Date(current);
-  prev.setDate(current.getDate() - 1);
-  router.push({ path: `/day/${prev.toISOString().slice(0, 10)}` });
+function goToPreviousDay(): void {
+  const current = new Date(currentDate.value)
+  const prev = new Date(current)
+  prev.setDate(current.getDate() - 1)
+  router.push({ path: `/day/${prev.toISOString().slice(0, 10)}` })
 }
 
-function goToNextDay() {
-  const current = new Date(currentDate.value);
-  const next = new Date(current);
-  next.setDate(current.getDate() + 1);
-  const nextDateStr = next.toISOString().slice(0, 10);
-  if (nextDateStr > today.value) {
-    return;
-  }
-  router.push({ path: `/day/${nextDateStr}` });
+function goToNextDay(): void {
+  const current = new Date(currentDate.value)
+  const next = new Date(current)
+  next.setDate(current.getDate() + 1)
+  router.push({ path: `/day/${next.toISOString().slice(0, 10)}` })
 }
 
-function goToToday() {
-  router.push({ path: `/day/${today.value}` });
+function goToToday(): void {
+  router.push({ path: `/day/${today.value}` })
 }
 </script>
 

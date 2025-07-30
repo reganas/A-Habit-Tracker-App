@@ -38,13 +38,13 @@
   </div>
 </template>
 
-<script setup>
-defineProps({
-  habit: {
-    type: Object,
-    default: () => ({}),
-  },
-  isStopped: Boolean,
-});
-defineEmits(['edit', 'stop', 'delete', 'resume']);
+<script setup lang="ts">
+import type { Habit } from '@/types';
+
+defineProps<{
+  habit: Habit;
+  isStopped: boolean;
+}>();
+
+defineEmits<['edit', 'stop', 'delete', 'resume']>();
 </script>

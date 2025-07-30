@@ -41,70 +41,72 @@
   </div>
 </template>
 
-<script setup>
-import { computed } from 'vue';
-import HabitItem from './HabitItem.vue';
+<script setup lang="ts">
+import { computed } from 'vue'
+import type { Habit, HabitEditData, DateString } from '@/types'
+import HabitItem from './HabitItem.vue'
 
-const props = defineProps({
-  habits: {
-    type: Array,
-    default: () => [],
-  },
-  completedHabits: {
-    type: Array,
-    default: () => [],
-  },
-  isFutureDay: Boolean,
-  currentDate: {
-    type: String,
-    default: '',
-  },
-  isHabitStoppedOnDate: {
-    type: Function,
-    required: true,
-  },
-});
+interface Props {
+  habits: Habit[]
+  completedHabits: number[]
+  isFutureDay: boolean
+  currentDate: DateString
+  isHabitStoppedOnDate: (habit: Habit, date: DateString) => boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  habits: () => [],
+  completedHabits: () => [],
+  isFutureDay: false,
+  currentDate: '',
+})
+
+const emit = defineEmits<{
+  toggle: [habitId: number]
+  edit: [data: HabitEditData]
+  stop: [habitId: number]
+  delete: [habitId: number]
+  resume: [habitId: number]
+}>()
 
 const visibleHabits = computed(() =>
   props.habits
-    .filter(habit => habit.createdDate <= props.currentDate)
-    .map(habit => ({
+    .filter((habit: Habit) => habit.createdDate <= props.currentDate)
+    .map((habit: Habit) => ({
       ...habit,
       isStopped: props.isHabitStoppedOnDate(habit, props.currentDate),
     })),
-);
+)
 
 const activeHabits = computed(() =>
-  visibleHabits.value.filter(habit => !habit.isStopped),
-);
+  visibleHabits.value.filter((habit: Habit) => !habit.isStopped),
+)
 
-const totalCount = computed(() => activeHabits.value.length);
+const totalCount = computed(() => activeHabits.value.length)
 const completedCount = computed(
   () =>
-    activeHabits.value.filter(h => props.completedHabits.includes(h.id)).length,
-);
-const leftCount = computed(() => totalCount.value - completedCount.value);
+    activeHabits.value.filter((h: Habit) => props.completedHabits.includes(h.id)).length,
+)
+const leftCount = computed(() => totalCount.value - completedCount.value)
 
-const emit = defineEmits(['toggle', 'edit', 'stop', 'delete', 'resume']);
-
-function toggleHabit(id) {
-  emit('toggle', id);
+function toggleHabit(id: number): void {
+  emit('toggle', id)
 }
 
-function editHabit(payload) {
-  emit('edit', payload);
+function editHabit(payload: HabitEditData): void {
+  emit('edit', payload)
 }
 
-function stopHabit(id) {
-  emit('stop', id);
+function stopHabit(id: number): void {
+  emit('stop', id)
 }
 
-function deleteHabit(id) {
-  emit('delete', id);
+function deleteHabit(id: number): void {
+  emit('delete', id)
 }
 
-function resumeHabit(id) {
-  emit('resume', id);
+function resumeHabit(id: number): void {
+  emit('resume', id)
 }
 </script>
 
