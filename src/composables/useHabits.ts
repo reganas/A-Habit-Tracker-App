@@ -186,5 +186,7 @@ export default function useHabits(habitStore: HabitStore) {
     toggleHabit,
     selectedDate,
     isHabitStoppedOnDate,
+    validateHabitName,
+    isDuplicateHabitName,
   };
 }
