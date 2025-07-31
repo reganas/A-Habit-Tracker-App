@@ -2,27 +2,38 @@ import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Habit, HabitStore, HabitEditData, DateString} from '@/types';
 
-export default function useHabits(habitStore: HabitStore) {
+export default function useHabits(habitStore: HabitStore, initialDate?: DateString) {
   const { habits, completedHabitsByDay } = habitStore;
   const showAddHabitMode = ref<boolean>(false);
   const newHabitName = ref<string>('');
   const error = ref<string>('');
   const success = ref<string>('');
   const loading = ref<boolean>(false);
-  const route = useRoute();
+  
+  // Only use route if we're in a Vue component context
+  let route: any = null;
+  try {
+    route = useRoute();
+  } catch (e) {
+    // We're in a test environment, route is not available
+  }
 
   const selectedDate = ref<DateString>(
-    route.params.date as string || new Date().toISOString().slice(0, 10),
+    initialDate || 
+    (route?.params?.date as string) || 
+    new Date().toISOString().slice(0, 10),
   );
 
-  // Keep selectedDate in sync with the route
-  watch(
-    () => route.params.date,
-    newDate => {
-      selectedDate.value = (newDate as string) || new Date().toISOString().slice(0, 10);
-    },
-    { immediate: true },
-  );
+  // Keep selectedDate in sync with the route (only if route exists)
+  if (route) {
+    watch(
+      () => route.params.date,
+      newDate => {
+        selectedDate.value = (newDate as string) || new Date().toISOString().slice(0, 10);
+      },
+      { immediate: true },
+    );
+  }
 
   function completedHabits(): number[] {
     return completedHabitsByDay.value[selectedDate.value] || [];
