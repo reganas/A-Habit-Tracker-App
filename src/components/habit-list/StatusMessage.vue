@@ -14,19 +14,9 @@
 </template>
 
 <script setup lang="ts">
-import type { Habit } from '@/types';
-
 interface Props {
-  habit: Habit
-  isStopped: boolean
+  completed: boolean
 }
 
-defineProps<Props>();
-
-defineEmits<{
-  edit: []
-  stop: []
-  delete: []
-  resume: []
-}>();
+defineProps<Props>()
 </script>

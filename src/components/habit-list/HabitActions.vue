@@ -46,5 +46,10 @@ defineProps<{
   isStopped: boolean;
 }>();
 
-defineEmits<['edit', 'stop', 'delete', 'resume']>();
+defineEmits<{
+  edit: []
+  stop: []
+  delete: []
+  resume: []
+}>();
 </script>

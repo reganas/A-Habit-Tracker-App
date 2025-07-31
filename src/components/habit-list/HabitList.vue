@@ -79,7 +79,7 @@ const visibleHabits = computed(() =>
 )
 
 const activeHabits = computed(() =>
-  visibleHabits.value.filter((habit: Habit) => !habit.isStopped),
+  visibleHabits.value.filter((habit) => !habit.isStopped),
 )
 
 const totalCount = computed(() => activeHabits.value.length)
