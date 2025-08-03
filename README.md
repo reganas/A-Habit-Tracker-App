@@ -1,22 +1,27 @@
 # Habit Tracker
 
-A responsive habit tracking application built with Vue 3 and Vite. It tracks your daily habits, navigates between days, and manages your progress.
+A responsive habit tracking application built with **Vue 3 + TypeScript** and Vite. It tracks your daily habits, navigates between days, and manages your progress with comprehensive testing coverage.
 
 ## Features
 
 - **Daily Habit Tracking** - Mark habits as complete/incomplete for any day
 - **Day Navigation** - Navigate between days with calendar picker and week view
 - **Habit Management** - Add, edit, stop, resume, and delete habits
+- **Stop/Resume Tracking** - Pause and resume habit tracking from specific dates (custom feature)
 - **Responsive Design** - Works on mobile, tablet, and desktop
 - **Light/Dark Mode** - Automatic theme switching based on system preference
 - **Accessibility** - High contrast mode and keyboard navigation support
 - **Local Storage** - Data persists between sessions
+- **Type Safety** - Full TypeScript implementation with strict type checking
 
 ## Tech Stack
 
 - **Vue 3** with Composition API
+- **TypeScript** for type safety and better development experience
 - **Vue Router** for client-side routing
 - **Vite** for build tooling
+- **Vitest** for unit testing
+- **Playwright** for end-to-end testing
 - **ESLint + Prettier + Stylelint** for code quality
 - **LocalStorage** for data persistence
 
@@ -32,8 +37,8 @@ A responsive habit tracking application built with Vue 3 and Vite. It tracks you
 1. Clone the repository
 
 ```bash
-git clone git@github.com:TuringCollegeSubmissions/jsteik-WD2.3.1.5.git
-cd habit-tracker-app
+git clone git@github.com:TuringCollegeSubmissions/jsteik-WD2.3.2.4.git
+cd habit-tracker-ts
 ```
 
 2. Install dependencies
@@ -52,12 +57,36 @@ npm run dev
 
 ## Available Scripts
 
+### Development
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
+- `npm run type-check` - Run TypeScript type checking
+
+### Testing
+- `npm run test` - Run unit tests with Vitest
+- `npm run test:ui` - Run unit tests with UI
+- `npm run test:e2e` - Run end-to-end tests with Playwright
+- `npm run test:e2e:ui` - Run E2E tests with UI
+
+### Code Quality
 - `npm run lint` - Run ESLint
 - `npm run format` - Format code with Prettier
 - `npm run lint:style` - Run Stylelint
+
+## Testing Coverage
+
+### Unit Tests (8 tests)
+- **Habit Name Validation** - Empty, duplicate, and valid name testing
+- **Habit Completion Logic** - Toggle, multiple habits, cleanup, state management
+
+### End-to-End Tests (6 tests)
+- **Add new habit successfully**
+- **Show error for duplicate habit name**
+- **Complete a habit by clicking checkbox**
+- **Edit a habit name**
+- **Stop a habit**
+- **Delete a habit**
 
 ## Usage
 
@@ -65,6 +94,7 @@ npm run dev
 2. **Tracking Progress**: Check/uncheck habits for any day
 3. **Navigation**: Use calendar picker or week view to navigate between days
 4. **Managing Habits**: Edit, stop, resume, or delete habits using the action buttons
+5. **Stop/Resume**: Use the pause button to stop tracking a habit, then resume when ready
 
 ## Project Structure
 
@@ -77,11 +107,36 @@ src/
 ├── config/                 # Application configuration
 ├── router/                 # Vue Router configuration
 ├── store/                  # State management
+├── types/                  # TypeScript type definitions
 ├── views/                  # Page components
 ├── App.vue                 # Root component
-├── main.js                 # Application entry point
+├── main.ts                 # Application entry point
 └── style.css               # Global styles
+
+tests/
+├── unit/                   # Unit tests (Vitest)
+│   └── composables/        # Composable tests
+├── e2e/                    # End-to-end tests (Playwright)
+│   └── habit-management.spec.ts
+└── setup.ts                # Test setup configuration
 ```
+
+## Custom Features
+
+### Stop/Resume Habit Tracking
+This application includes a unique feature that allows users to:
+- **Stop tracking** a habit from a specific date
+- **Resume tracking** a habit from a specific date
+- **Visual indicators** showing stopped habits with "(Stopped)" label
+- **Date-based logic** ensuring habits are only stopped between stop and resume dates
+
+## TypeScript Implementation
+
+The application has been fully migrated from JavaScript to TypeScript, providing:
+- **Type Safety** - Compile-time error checking
+- **Better IDE Support** - Enhanced autocomplete and refactoring
+- **Interface Definitions** - Clear data structure contracts
+- **Strict Type Checking** - Prevents runtime errors
 
 ## License
 

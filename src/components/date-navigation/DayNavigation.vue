@@ -30,7 +30,7 @@ import { useRouter, useRoute } from 'vue-router';
 import type { DateString } from '@/types';
 import CalendarNavigation from './CalendarNavigation.vue';
 import WeekNavigator from './WeekNavigator.vue';
-import appConfig from '../../config/appConfig';
+import appConfig from '@/config/appConfig';
 
 const route = useRoute();
 const router = useRouter();
