@@ -1,8 +1,8 @@
 <template>
   <div>
     <p v-if="totalCount === 0" class="habit-prompt">
-      Press the <span style="font-weight: bold">+</span> button above to
-      add your first habit!
+      Press the <span style="font-weight: bold">+</span> button above to add
+      your first habit!
     </p>
     <template v-else>
       <p class="habit-prompt">Tick the box if you completed the habit today!</p>
@@ -42,16 +42,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { Habit, HabitEditData, DateString } from '@/types'
-import HabitItem from './HabitItem.vue'
+import { computed } from 'vue';
+import type { Habit, HabitEditData, DateString } from '@/types';
+import HabitItem from './HabitItem.vue';
 
 interface Props {
-  habits: Habit[]
-  completedHabits: number[]
-  isFutureDay: boolean
-  currentDate: DateString
-  isHabitStoppedOnDate: (habit: Habit, date: DateString) => boolean
+  habits: Habit[];
+  completedHabits: number[];
+  isFutureDay: boolean;
+  currentDate: DateString;
+  isHabitStoppedOnDate: (habit: Habit, date: DateString) => boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -59,15 +59,15 @@ const props = withDefaults(defineProps<Props>(), {
   completedHabits: () => [],
   isFutureDay: false,
   currentDate: '',
-})
+});
 
 const emit = defineEmits<{
-  toggle: [habitId: number]
-  edit: [data: HabitEditData]
-  stop: [habitId: number]
-  delete: [habitId: number]
-  resume: [habitId: number]
-}>()
+  toggle: [habitId: number];
+  edit: [data: HabitEditData];
+  stop: [habitId: number];
+  delete: [habitId: number];
+  resume: [habitId: number];
+}>();
 
 const visibleHabits = computed(() =>
   props.habits
@@ -76,37 +76,39 @@ const visibleHabits = computed(() =>
       ...habit,
       isStopped: props.isHabitStoppedOnDate(habit, props.currentDate),
     })),
-)
+);
 
 const activeHabits = computed(() =>
-  visibleHabits.value.filter((habit) => !habit.isStopped),
-)
+  visibleHabits.value.filter(habit => !habit.isStopped),
+);
 
-const totalCount = computed(() => activeHabits.value.length)
+const totalCount = computed(() => activeHabits.value.length);
 const completedCount = computed(
   () =>
-    activeHabits.value.filter((h: Habit) => props.completedHabits.includes(h.id)).length,
-)
-const leftCount = computed(() => totalCount.value - completedCount.value)
+    activeHabits.value.filter((h: Habit) =>
+      props.completedHabits.includes(h.id),
+    ).length,
+);
+const leftCount = computed(() => totalCount.value - completedCount.value);
 
 function toggleHabit(id: number): void {
-  emit('toggle', id)
+  emit('toggle', id);
 }
 
 function editHabit(payload: HabitEditData): void {
-  emit('edit', payload)
+  emit('edit', payload);
 }
 
 function stopHabit(id: number): void {
-  emit('stop', id)
+  emit('stop', id);
 }
 
 function deleteHabit(id: number): void {
-  emit('delete', id)
+  emit('delete', id);
 }
 
 function resumeHabit(id: number): void {
-  emit('resume', id)
+  emit('resume', id);
 }
 </script>
 

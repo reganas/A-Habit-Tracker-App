@@ -47,9 +47,9 @@ defineProps<{
 }>();
 
 defineEmits<{
-  edit: []
-  stop: []
-  delete: []
-  resume: []
+  edit: [];
+  stop: [];
+  delete: [];
+  resume: [];
 }>();
 </script>

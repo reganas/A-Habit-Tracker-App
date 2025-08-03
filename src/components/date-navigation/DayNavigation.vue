@@ -18,97 +18,101 @@
   />
   <div class="selected-date-display" role="status" aria-live="polite">
     <span class="selected-date-label">Selected Date:</span>
-    <span class="selected-date-value" aria-label="Current selected date">{{ formattedSelectedDate }}</span>
+    <span class="selected-date-value" aria-label="Current selected date">{{
+      formattedSelectedDate
+    }}</span>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import type { DateString } from '@/types'
-import CalendarNavigation from './CalendarNavigation.vue'
-import WeekNavigator from './WeekNavigator.vue'
-import appConfig from '../../config/appConfig'
+import { ref, computed, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import type { DateString } from '@/types';
+import CalendarNavigation from './CalendarNavigation.vue';
+import WeekNavigator from './WeekNavigator.vue';
+import appConfig from '../../config/appConfig';
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 
-const today = ref<DateString>(new Date().toISOString().slice(0, 10))
-const currentDate = ref<DateString>((route.params.date as string) || today.value)
+const today = ref<DateString>(new Date().toISOString().slice(0, 10));
+const currentDate = ref<DateString>(
+  (route.params.date as string) || today.value,
+);
 
 const isNextDayFuture = computed((): boolean => {
-  const current = new Date(currentDate.value)
-  const next = new Date(current)
-  next.setDate(current.getDate() + 1)
-  const nextDateStr = next.toISOString().slice(0, 10)
-  return nextDateStr > today.value
-})
+  const current = new Date(currentDate.value);
+  const next = new Date(current);
+  next.setDate(current.getDate() + 1);
+  const nextDateStr = next.toISOString().slice(0, 10);
+  return nextDateStr > today.value;
+});
 
 // Format the selected date for display
 const formattedSelectedDate = computed((): string => {
-  const date = new Date(currentDate.value)
-  
+  const date = new Date(currentDate.value);
+
   try {
     return date.toLocaleDateString(appConfig.locale, {
       weekday: 'short',
       year: 'numeric',
       month: 'short',
-      day: 'numeric'
-    })
+      day: 'numeric',
+    });
   } catch (error) {
     // Fallback to a simple format if locale fails
     return date.toLocaleDateString('en-US', {
       weekday: 'short',
       year: 'numeric',
       month: 'short',
-      day: 'numeric'
-    })
+      day: 'numeric',
+    });
   }
-})
+});
 
 function getTodayString(): DateString {
-  return new Date().toISOString().slice(0, 10)
+  return new Date().toISOString().slice(0, 10);
 }
 
 function isValidDateString(dateStr: string): boolean {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return false
-  const date = new Date(dateStr)
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return false;
+  const date = new Date(dateStr);
   return (
     !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === dateStr
-  )
+  );
 }
 
 // Watch for route changes to keep `currentDate` in sync
 watch(
   () => route.params.date,
   (newDate: string | string[] | undefined) => {
-    const dateToUse = (newDate as string) || getTodayString()
+    const dateToUse = (newDate as string) || getTodayString();
     if (!isValidDateString(dateToUse) || dateToUse > today.value) {
-      router.replace({ path: '/' })
-      return
+      router.replace({ path: '/' });
+      return;
     }
-    currentDate.value = dateToUse
+    currentDate.value = dateToUse;
   },
   { immediate: true },
-)
+);
 
 // Navigation functions
 function goToPreviousDay(): void {
-  const current = new Date(currentDate.value)
-  const prev = new Date(current)
-  prev.setDate(current.getDate() - 1)
-  router.push({ path: `/day/${prev.toISOString().slice(0, 10)}` })
+  const current = new Date(currentDate.value);
+  const prev = new Date(current);
+  prev.setDate(current.getDate() - 1);
+  router.push({ path: `/day/${prev.toISOString().slice(0, 10)}` });
 }
 
 function goToNextDay(): void {
-  const current = new Date(currentDate.value)
-  const next = new Date(current)
-  next.setDate(current.getDate() + 1)
-  router.push({ path: `/day/${next.toISOString().slice(0, 10)}` })
+  const current = new Date(currentDate.value);
+  const next = new Date(current);
+  next.setDate(current.getDate() + 1);
+  router.push({ path: `/day/${next.toISOString().slice(0, 10)}` });
 }
 
 function goToToday(): void {
-  router.push({ path: `/day/${today.value}` })
+  router.push({ path: `/day/${today.value}` });
 }
 </script>
 
@@ -238,11 +242,11 @@ button:disabled {
     background: rgba(255, 255, 255, 0.15);
     border-color: rgba(255, 255, 255, 0.2);
   }
-  
+
   .selected-date-label {
     color: #2c3e50;
   }
-  
+
   .selected-date-value {
     color: #2c3e50;
   }
@@ -255,11 +259,11 @@ button:disabled {
     padding: 0.4rem 0.6rem;
     max-width: 280px;
   }
-  
+
   .selected-date-label {
     font-size: 0.75rem;
   }
-  
+
   .selected-date-value {
     font-size: 0.8rem;
   }

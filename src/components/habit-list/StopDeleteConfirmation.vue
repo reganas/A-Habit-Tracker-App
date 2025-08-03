@@ -10,23 +10,23 @@
 
 <script setup lang="ts">
 interface Props {
-  visible: boolean
-  message: string
+  visible: boolean;
+  message: string;
 }
 
-defineProps<Props>()
+defineProps<Props>();
 
 const emit = defineEmits<{
-  confirm: []
-  cancel: []
-}>()
+  confirm: [];
+  cancel: [];
+}>();
 
 function confirmAction(): void {
-  emit('confirm')
+  emit('confirm');
 }
 
 function cancelAction(): void {
-  emit('cancel')
+  emit('cancel');
 }
 </script>
 

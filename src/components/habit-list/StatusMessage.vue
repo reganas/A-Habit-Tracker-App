@@ -15,8 +15,8 @@
 
 <script setup lang="ts">
 interface Props {
-  completed: boolean
+  completed: boolean;
 }
 
-defineProps<Props>()
+defineProps<Props>();
 </script>

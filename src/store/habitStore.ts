@@ -6,7 +6,8 @@ export default function useHabitStore(): HabitStore {
   const storedCompleted = localStorage.getItem('completedHabitsByDay');
 
   const habits: Ref<Habit[]> = ref<Habit[]>([]);
-  const completedHabitsByDay: Ref<CompletedHabitsByDay> = ref<CompletedHabitsByDay>({});
+  const completedHabitsByDay: Ref<CompletedHabitsByDay> =
+    ref<CompletedHabitsByDay>({});
 
   // Parse stored data safely
   if (storedHabits) {
@@ -19,7 +20,9 @@ export default function useHabitStore(): HabitStore {
 
   if (storedCompleted) {
     try {
-      completedHabitsByDay.value = JSON.parse(storedCompleted) as CompletedHabitsByDay;
+      completedHabitsByDay.value = JSON.parse(
+        storedCompleted,
+      ) as CompletedHabitsByDay;
     } catch (error) {
       console.warn(
         'Failed to parse completed habits from localStorage:',

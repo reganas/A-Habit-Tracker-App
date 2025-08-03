@@ -1,15 +1,18 @@
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import type { Habit, HabitStore, HabitEditData, DateString} from '@/types';
+import type { Habit, HabitStore, HabitEditData, DateString } from '@/types';
 
-export default function useHabits(habitStore: HabitStore, initialDate?: DateString) {
+export default function useHabits(
+  habitStore: HabitStore,
+  initialDate?: DateString,
+) {
   const { habits, completedHabitsByDay } = habitStore;
   const showAddHabitMode = ref<boolean>(false);
   const newHabitName = ref<string>('');
   const error = ref<string>('');
   const success = ref<string>('');
   const loading = ref<boolean>(false);
-  
+
   // Only use route if we're in a Vue component context
   let route: any = null;
   try {
@@ -19,9 +22,9 @@ export default function useHabits(habitStore: HabitStore, initialDate?: DateStri
   }
 
   const selectedDate = ref<DateString>(
-    initialDate || 
-    (route?.params?.date as string) || 
-    new Date().toISOString().slice(0, 10),
+    initialDate ||
+      (route?.params?.date as string) ||
+      new Date().toISOString().slice(0, 10),
   );
 
   // Keep selectedDate in sync with the route (only if route exists)
@@ -29,7 +32,8 @@ export default function useHabits(habitStore: HabitStore, initialDate?: DateStri
     watch(
       () => route.params.date,
       newDate => {
-        selectedDate.value = (newDate as string) || new Date().toISOString().slice(0, 10);
+        selectedDate.value =
+          (newDate as string) || new Date().toISOString().slice(0, 10);
       },
       { immediate: true },
     );
@@ -48,15 +52,22 @@ export default function useHabits(habitStore: HabitStore, initialDate?: DateStri
     return sel > today;
   }
 
-  function isDuplicateHabitName(name: string, excludeId: number | null = null): boolean {
+  function isDuplicateHabitName(
+    name: string,
+    excludeId: number | null = null,
+  ): boolean {
     return habits.value.some(
       (h: Habit) =>
         h.name.trim().toLowerCase() === name.trim().toLowerCase() &&
-        h.id !== excludeId,
+        h.id !== excludeId &&
+        h.createdDate === selectedDate.value, // Only check same date
     );
   }
 
-  function validateHabitName(name: string, excludeId: number | null = null): string {
+  function validateHabitName(
+    name: string,
+    excludeId: number | null = null,
+  ): string {
     const trimmedName = name.trim();
     if (!trimmedName) {
       return 'Habit name cannot be empty';
@@ -160,6 +171,11 @@ export default function useHabits(habitStore: HabitStore, initialDate?: DateStri
         ].filter((hid: number) => hid !== id);
       }
     });
+
+    success.value = 'Habit deleted successfully';
+    setTimeout(() => {
+      success.value = '';
+    }, 3000);
   }
 
   // toggle habit completion fo the selected day

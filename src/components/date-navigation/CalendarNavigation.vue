@@ -7,27 +7,27 @@ import type { DateString } from '@/types';
 import appConfig from '../../config/appConfig';
 
 interface Props {
-  currentDate: DateString
+  currentDate: DateString;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   currentDate: () => new Date().toISOString().slice(0, 10),
-})
+});
 
-const router = useRouter()
-const date = ref<Date>(new Date(props.currentDate))
+const router = useRouter();
+const date = ref<Date>(new Date(props.currentDate));
 
 // Keep date in sync if prop changes
 watch(
   () => props.currentDate,
   (val: DateString) => {
-    if (val) date.value = new Date(val)
+    if (val) date.value = new Date(val);
   },
-)
+);
 
 function onDateSelect(val: Date | null): void {
   if (val && val <= new Date()) {
-    router.push({ path: `/day/${val.toISOString().slice(0, 10)}` })
+    router.push({ path: `/day/${val.toISOString().slice(0, 10)}` });
   }
 }
 </script>
