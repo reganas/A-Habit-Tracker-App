@@ -13,7 +13,7 @@ const appConfig: AppConfig = {
   locale: userLocale,
   showWeekends: true,
   minDate: '2022-01-01',
-  maxHabitNameLength: 30,
+  maxHabitNameLength: 20,
 };
 
 export default appConfig;

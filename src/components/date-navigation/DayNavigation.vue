@@ -5,7 +5,7 @@ import type { DateString } from '@/types';
 import CalendarNavigation from './CalendarNavigation.vue';
 import WeekNavigator from './WeekNavigator.vue';
 import appConfig from '@/config/appConfig';
-import { BUTTON_LABELS, STATUS_LABELS, UI_LABELS } from '@/config/constants';
+import { BUTTON_LABELS, STATUS_LABELS } from '@/config/constants';
 
 const route = useRoute();
 const router = useRouter();
