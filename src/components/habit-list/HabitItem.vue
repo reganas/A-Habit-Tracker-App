@@ -6,7 +6,7 @@ import HabitActions from './HabitActions.vue';
 import StopDeleteConfirmation from './StopDeleteConfirmation.vue';
 import { MESSAGES, BUTTON_LABELS, STATUS_LABELS } from '@/config/constants';
 
-interface Props {
+type Props = {
   habit: Habit;
   completed: boolean;
   disabled: boolean;

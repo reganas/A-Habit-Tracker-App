@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import type { Habit, HabitEditData, DateString } from '@/types';
 import HabitItem from './HabitItem.vue';
 
-interface Props {
+type Props = {
   habits: Habit[];
   completedHabits: number[];
   isFutureDay: boolean;

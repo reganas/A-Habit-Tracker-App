@@ -1,73 +1,73 @@
 import type { Ref } from 'vue';
 
 // Core habit data structure
-export interface Habit {
+export type Habit = {
   id: number;
   name: string;
   createdDate: string;
   stopDate?: string;
   resumeDate?: string | null;
-}
+};
 
-export interface CompletedHabitsByDay {
+export type CompletedHabitsByDay = {
   [date: string]: number[]; // Array of habit IDs completed on that date
-}
+};
 
-export interface HabitStore {
+export type HabitStore = {
   habits: Ref<Habit[]>;
   completedHabitsByDay: Ref<CompletedHabitsByDay>;
-}
+};
 
-export interface HabitFormData {
+export type HabitFormData = {
   name: string;
   createdDate: string;
-}
+};
 
-export interface HabitEditData {
+export type HabitEditData = {
   id: number;
   name: string;
-}
+};
 
-export interface DateNavigation {
+export type DateNavigation = {
   selectedDate: string;
   isFutureDay: boolean;
-}
+};
 
-export interface HabitCompletion {
+export type HabitCompletion = {
   habitId: number;
   completed: boolean;
   date: string;
-}
+};
 
-export interface UIState {
+export type UIState = {
   showAddHabitMode: boolean;
   loading: boolean;
   error: string;
   success: string;
-}
+};
 
-export interface HabitItemProps {
+export type HabitItemProps = {
   habit: Habit;
   completed: boolean;
   disabled: boolean;
   isStopped: boolean;
-}
+};
 
-export interface HabitListProps {
+export type HabitListProps = {
   habits: Habit[];
   currentDate: string;
   completedHabits: number[];
   isFutureDay: boolean;
   isHabitStoppedOnDate: (habit: Habit, date: string) => boolean;
-}
+};
 
-export interface HabitEvents {
+export type HabitEvents = {
   toggle: (habitId: number) => void;
   edit: (data: HabitEditData) => void;
   stop: (habitId: number) => void;
   resume: (habitId: number) => void;
   delete: (habitId: number) => void;
-}
+};
 
 // Utility types
 export type DateString = string; // ISO date string (YYYY-MM-DD)

@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import type { DateString } from '@/types';
 import appConfig from '../../config/appConfig';
 
-interface Props {
+type Props = {
   currentDate: DateString;
   today: DateString;
   weekStartsOn: number;
@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const router = useRouter();
 
-interface WeekDay {
+type WeekDay = {
   date: DateString;
   name: string;
   dayNumber: number;

@@ -1,4 +1,4 @@
-interface AppConfig {
+type AppConfig = {
   weekStartsOn: number;
   locale: string;
   showWeekends: boolean;

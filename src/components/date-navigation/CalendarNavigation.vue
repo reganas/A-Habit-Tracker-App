@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router';
 import type { DateString } from '@/types';
 import appConfig from '../../config/appConfig';
 
-interface Props {
+type Props = {
   currentDate: DateString;
 }
 
