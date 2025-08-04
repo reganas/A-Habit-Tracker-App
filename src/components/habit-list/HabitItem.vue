@@ -2,7 +2,6 @@
 import appConfig from '@/config/appConfig';
 import { ref, watch } from 'vue';
 import type { Habit, HabitEditData } from '@/types';
-import StatusMessage from './StatusMessage.vue';
 import HabitActions from './HabitActions.vue';
 import StopDeleteConfirmation from './StopDeleteConfirmation.vue';
 import { MESSAGES, BUTTON_LABELS, STATUS_LABELS } from '@/config/constants';
@@ -118,7 +117,6 @@ function cancelEdit(): void {
         />
         <span class="habit-name">{{ habit.name }}</span>
       </div>
-      <StatusMessage :completed="completed" />
       <HabitActions
         :habit="habit"
         :is-stopped="isStopped"

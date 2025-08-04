@@ -33,7 +33,6 @@ const {
     </header>
 
     <main>
-      <!-- Error and Success Messages -->
       <div v-if="error" class="error" role="alert" aria-live="polite">
         {{ error }}
       </div>

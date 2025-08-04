@@ -58,19 +58,15 @@ describe('Habit Completion Logic', () => {
       '2024-01-01',
     );
 
-    // Add a habit first
     habitStore.habits.value = [
       { id: 1, name: 'Exercise', createdDate: '2024-01-01' },
     ];
 
-    // Initially no habits completed
     expect(completedHabits()).toEqual([]);
 
-    // Toggle completion
     toggleHabit(1);
     expect(completedHabits()).toEqual([1]);
 
-    // Toggle again to uncomplete
     toggleHabit(1);
     expect(completedHabits()).toEqual([]);
   });
@@ -98,21 +94,18 @@ describe('Habit Completion Logic', () => {
       '2024-01-01',
     );
 
-    // Add habit and complete it
     habitStore.habits.value = [
       { id: 1, name: 'Exercise', createdDate: '2024-01-01' },
     ];
     toggleHabit(1);
     expect(completedHabits()).toEqual([1]);
 
-    // Add another habit
     habitStore.habits.value.push({
       id: 2,
       name: 'Reading',
       createdDate: '2024-01-01',
     });
 
-    // First habit should still be completed
     expect(completedHabits()).toEqual([1]);
   });
 
@@ -126,21 +119,17 @@ describe('Habit Completion Logic', () => {
       { id: 1, name: 'Exercise', createdDate: '2024-01-01' },
     ];
 
-    // Complete the habit
     toggleHabit(1);
     expect(completedHabits()).toEqual([1]);
 
-    // Delete the habit
     deleteHabit(1);
 
-    // Completion should be cleaned up
     expect(completedHabits()).toEqual([]);
   });
 
   it('should handle empty completion array for new dates', () => {
     const { completedHabits } = useHabits(habitStore, '2024-01-01');
 
-    // New date should have empty completion array
     expect(completedHabits()).toEqual([]);
   });
 });

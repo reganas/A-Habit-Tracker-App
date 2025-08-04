@@ -63,15 +63,19 @@ test.describe('Habit Management', async () => {
   test('should complete a habit by clicking checkbox', async ({ page }) => {
     await addHabit(page, 'exercise');
 
-    await expect(page.getByText('error_outline Habit not')).toBeVisible();
+    // Check that the checkbox is initially unchecked
+    await expect(
+      page.getByRole('checkbox', { name: 'Mark exercise as complete' }),
+    ).not.toBeChecked();
 
     await page
       .getByRole('checkbox', { name: 'Mark exercise as complete' })
       .check();
 
-    await expect(page.getByText('error_outline Habit not')).not.toBeVisible();
-
-    await expect(page.getByText('check_circle Completed for')).toBeVisible();
+    // Verify the checkbox is now checked
+    await expect(
+      page.getByRole('checkbox', { name: 'Mark exercise as complete' }),
+    ).toBeChecked();
 
     await expect(page.getByText('Completed: 1 / 1 | Left:')).toBeVisible();
   });

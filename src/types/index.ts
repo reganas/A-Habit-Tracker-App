@@ -61,7 +61,6 @@ export interface HabitListProps {
   isHabitStoppedOnDate: (habit: Habit, date: string) => boolean;
 }
 
-// Event handlers
 export interface HabitEvents {
   toggle: (habitId: number) => void;
   edit: (data: HabitEditData) => void;
