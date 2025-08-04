@@ -1,3 +1,30 @@
+<script setup lang="ts">
+import useHabits from '../composables/useHabits';
+import useHabitStore from '../store/habitStore';
+import DayNavigation from '../components/date-navigation/DayNavigation.vue';
+import HabitList from '../components/habit-list/HabitList.vue';
+
+const habitStore = useHabitStore();
+const {
+  habits,
+  completedHabits,
+  isFutureDay,
+  showAddHabitMode,
+  newHabitName,
+  error,
+  success,
+  loading,
+  addHabit,
+  toggleHabit,
+  editHabit,
+  stopHabit,
+  resumeHabit,
+  deleteHabit,
+  selectedDate,
+  isHabitStoppedOnDate,
+} = useHabits(habitStore);
+</script>
+
 <template>
   <div :class="{ loading }">
     <DayNavigation />
@@ -75,33 +102,6 @@
     </main>
   </div>
 </template>
-
-<script setup lang="ts">
-import useHabits from '../composables/useHabits';
-import useHabitStore from '../store/habitStore';
-import DayNavigation from '../components/date-navigation/DayNavigation.vue';
-import HabitList from '../components/habit-list/HabitList.vue';
-
-const habitStore = useHabitStore();
-const {
-  habits,
-  completedHabits,
-  isFutureDay,
-  showAddHabitMode,
-  newHabitName,
-  error,
-  success,
-  loading,
-  addHabit,
-  toggleHabit,
-  editHabit,
-  stopHabit,
-  resumeHabit,
-  deleteHabit,
-  selectedDate,
-  isHabitStoppedOnDate,
-} = useHabits(habitStore);
-</script>
 
 <style scoped>
 .add-habit-section {

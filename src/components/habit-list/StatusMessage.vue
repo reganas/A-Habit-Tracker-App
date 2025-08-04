@@ -1,3 +1,11 @@
+<script setup lang="ts">
+interface Props {
+  completed: boolean;
+}
+
+defineProps<Props>();
+</script>
+
 <template>
   <span v-if="completed" class="completed-msg">
     <span class="material-icons" style="color: #218838; vertical-align: middle"
@@ -12,11 +20,3 @@
     Habit not completed yet!
   </span>
 </template>
-
-<script setup lang="ts">
-interface Props {
-  completed: boolean;
-}
-
-defineProps<Props>();
-</script>

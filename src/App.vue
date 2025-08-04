@@ -1,3 +1,5 @@
+<script setup lang="ts"></script>
+
 <template>
   <div class="app-container">
     <main class="app-main">
@@ -8,8 +10,6 @@
     </footer>
   </div>
 </template>
-
-<script setup lang="ts"></script>
 
 <style>
 .app-container {

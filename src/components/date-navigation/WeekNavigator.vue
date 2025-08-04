@@ -1,24 +1,3 @@
-<template>
-  <div class="week-container">
-    <div
-      v-for="day in weekDays"
-      :key="day.date"
-      :class="[
-        'day-item',
-        {
-          active: day.date === currentDate,
-          today: day.isToday,
-          future: day.isFuture,
-        },
-      ]"
-      @click="goToDate(day.date)"
-    >
-      <div class="day-name">{{ day.name }}</div>
-      <div class="day-date">{{ day.dayNumber }}</div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
@@ -111,6 +90,27 @@ function goToDate(date: DateString): void {
   router.push({ path: `/day/${date}` });
 }
 </script>
+
+<template>
+  <div class="week-container">
+    <div
+      v-for="day in weekDays"
+      :key="day.date"
+      :class="[
+        'day-item',
+        {
+          active: day.date === currentDate,
+          today: day.isToday,
+          future: day.isFuture,
+        },
+      ]"
+      @click="goToDate(day.date)"
+    >
+      <div class="day-name">{{ day.name }}</div>
+      <div class="day-date">{{ day.dayNumber }}</div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .week-container {

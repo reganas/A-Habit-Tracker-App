@@ -1,29 +1,3 @@
-<template>
-  <nav>
-    <button @click="goToPreviousDay">Previous</button>
-    <CalendarNavigation :current-date="currentDate" />
-    <button
-      class="today-btn"
-      :class="{ active: currentDate === today }"
-      @click="goToToday"
-    >
-      Today
-    </button>
-    <button :disabled="isNextDayFuture" @click="goToNextDay">Next</button>
-  </nav>
-  <WeekNavigator
-    :current-date="currentDate"
-    :today="today"
-    :week-starts-on="appConfig.weekStartsOn"
-  />
-  <div class="selected-date-display" role="status" aria-live="polite">
-    <span class="selected-date-label">Selected Date:</span>
-    <span class="selected-date-value" aria-label="Current selected date">{{
-      formattedSelectedDate
-    }}</span>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
@@ -115,6 +89,32 @@ function goToToday(): void {
   router.push({ path: `/day/${today.value}` });
 }
 </script>
+
+<template>
+  <nav>
+    <button @click="goToPreviousDay">Previous</button>
+    <CalendarNavigation :current-date="currentDate" />
+    <button
+      class="today-btn"
+      :class="{ active: currentDate === today }"
+      @click="goToToday"
+    >
+      Today
+    </button>
+    <button :disabled="isNextDayFuture" @click="goToNextDay">Next</button>
+  </nav>
+  <WeekNavigator
+    :current-date="currentDate"
+    :today="today"
+    :week-starts-on="appConfig.weekStartsOn"
+  />
+  <div class="selected-date-display" role="status" aria-live="polite">
+    <span class="selected-date-label">Selected Date:</span>
+    <span class="selected-date-value" aria-label="Current selected date">{{
+      formattedSelectedDate
+    }}</span>
+  </div>
+</template>
 
 <style scoped>
 nav {

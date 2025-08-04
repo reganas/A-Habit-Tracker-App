@@ -1,4 +1,5 @@
-import { ref, watch, type Ref } from 'vue';
+import { ref, watch } from 'vue';
+import type { Ref } from 'vue';
 import type { Habit, CompletedHabitsByDay, HabitStore } from '@/types';
 
 export default function useHabitStore(): HabitStore {
@@ -9,7 +10,6 @@ export default function useHabitStore(): HabitStore {
   const completedHabitsByDay: Ref<CompletedHabitsByDay> =
     ref<CompletedHabitsByDay>({});
 
-  // Parse stored data safely
   if (storedHabits) {
     try {
       habits.value = JSON.parse(storedHabits) as Habit[];
@@ -31,7 +31,6 @@ export default function useHabitStore(): HabitStore {
     }
   }
 
-  // Persist to localStorage with error handling
   watch(
     habits,
     (val: Habit[]) => {

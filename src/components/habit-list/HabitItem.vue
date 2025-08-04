@@ -1,3 +1,78 @@
+<script setup lang="ts">
+import appConfig from '@/config/appConfig';
+import { ref, watch } from 'vue';
+import type { Habit, HabitEditData } from '@/types';
+import StatusMessage from './StatusMessage.vue';
+import HabitActions from './HabitActions.vue';
+import StopDeleteConfirmation from './StopDeleteConfirmation.vue';
+
+interface Props {
+  habit: Habit;
+  completed: boolean;
+  disabled: boolean;
+  isStopped: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  completed: false,
+  disabled: false,
+  isStopped: false,
+});
+
+const emit = defineEmits<{
+  toggle: [habitId: number];
+  edit: [data: HabitEditData];
+  stop: [habitId: number];
+  delete: [habitId: number];
+  resume: [habitId: number];
+}>();
+
+const editing = ref<boolean>(false);
+const editName = ref<string>(props.habit.name);
+const showDeleteModal = ref<boolean>(false);
+const showStopModal = ref<boolean>(false);
+const isDuplicate = ref<boolean>(false);
+
+watch(
+  () => props.habit.name,
+  (newName: string) => {
+    editName.value = newName;
+  },
+);
+
+function deleteHabit(): void {
+  emit('delete', props.habit.id);
+  showDeleteModal.value = false;
+}
+
+function stopHabit(): void {
+  emit('stop', props.habit.id);
+  showStopModal.value = false;
+}
+
+function onToggle(): void {
+  emit('toggle', props.habit.id);
+}
+
+function trySaveEdit(): void {
+  if (!editName.value.trim()) {
+    return;
+  }
+  if (isDuplicate.value) {
+    return;
+  }
+  if (editName.value !== props.habit.name) {
+    emit('edit', { id: props.habit.id, name: editName.value.trim() });
+  }
+  editing.value = false;
+}
+
+function cancelEdit(): void {
+  editing.value = false;
+  isDuplicate.value = false;
+}
+</script>
+
 <template>
   <li class="habit-item">
     <!-- Editing mode for active habits -->
@@ -5,6 +80,7 @@
       <input
         v-model="editName"
         type="text"
+        :maxlength="appConfig.maxHabitNameLength"
         autofocus
         @keyup.enter="trySaveEdit"
         @keyup.escape="cancelEdit"
@@ -84,80 +160,6 @@
   </li>
 </template>
 
-<script setup lang="ts">
-import { ref, watch } from 'vue';
-import type { Habit, HabitEditData } from '@/types';
-import StatusMessage from './StatusMessage.vue';
-import HabitActions from './HabitActions.vue';
-import StopDeleteConfirmation from './StopDeleteConfirmation.vue';
-
-interface Props {
-  habit: Habit;
-  completed: boolean;
-  disabled: boolean;
-  isStopped: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  completed: false,
-  disabled: false,
-  isStopped: false,
-});
-
-const emit = defineEmits<{
-  toggle: [habitId: number];
-  edit: [data: HabitEditData];
-  stop: [habitId: number];
-  delete: [habitId: number];
-  resume: [habitId: number];
-}>();
-
-const editing = ref<boolean>(false);
-const editName = ref<string>(props.habit.name);
-const showDeleteModal = ref<boolean>(false);
-const showStopModal = ref<boolean>(false);
-const isDuplicate = ref<boolean>(false);
-
-watch(
-  () => props.habit.name,
-  (newName: string) => {
-    editName.value = newName;
-  },
-);
-
-function deleteHabit(): void {
-  emit('delete', props.habit.id);
-  showDeleteModal.value = false;
-}
-
-function stopHabit(): void {
-  emit('stop', props.habit.id);
-  showStopModal.value = false;
-}
-
-function onToggle(): void {
-  emit('toggle', props.habit.id);
-}
-
-function trySaveEdit(): void {
-  if (!editName.value.trim()) {
-    return;
-  }
-  if (isDuplicate.value) {
-    return;
-  }
-  if (editName.value !== props.habit.name) {
-    emit('edit', { id: props.habit.id, name: editName.value.trim() });
-  }
-  editing.value = false;
-}
-
-function cancelEdit(): void {
-  editing.value = false;
-  isDuplicate.value = false;
-}
-</script>
-
 <style scoped>
 .habit-label {
   display: flex;
@@ -173,6 +175,10 @@ function cancelEdit(): void {
   font-size: 1.2rem;
   color: #218838;
   font-weight: 600;
+  word-break: break-word;
+  white-space: normal;
+  max-width: 100%;
+  display: block;
 }
 
 .habit-name.stopped {

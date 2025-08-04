@@ -1,13 +1,3 @@
-<template>
-  <div v-if="visible" class="modal-backdrop">
-    <div class="modal">
-      <p>{{ message }}</p>
-      <button @click="confirmAction">Yes</button>
-      <button @click="cancelAction">No</button>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 interface Props {
   visible: boolean;
@@ -29,6 +19,16 @@ function cancelAction(): void {
   emit('cancel');
 }
 </script>
+
+<template>
+  <div v-if="visible" class="modal-backdrop">
+    <div class="modal">
+      <p>{{ message }}</p>
+      <button @click="confirmAction">Yes</button>
+      <button @click="cancelAction">No</button>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .modal-backdrop {

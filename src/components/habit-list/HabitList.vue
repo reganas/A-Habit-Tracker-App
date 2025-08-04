@@ -1,46 +1,3 @@
-<template>
-  <div>
-    <p v-if="totalCount === 0" class="habit-prompt">
-      Press the <span style="font-weight: bold">+</span> button above to add
-      your first habit!
-    </p>
-    <template v-else>
-      <p class="habit-prompt">Tick the box if you completed the habit today!</p>
-      <p class="habit-summary">
-        Completed: {{ completedCount }} / {{ totalCount }} &nbsp;|&nbsp; Left:
-        {{ leftCount }}
-      </p>
-      <p
-        v-if="totalCount > 0 && completedCount === totalCount"
-        class="all-set-msg"
-      >
-        <span
-          class="material-icons"
-          style="color: #218838; vertical-align: middle"
-          >check_circle</span
-        >
-        All set for today!
-      </p>
-    </template>
-    <ul>
-      <HabitItem
-        v-for="habit in visibleHabits"
-        :key="habit.id"
-        :habit="habit"
-        :completed="completedHabits.includes(habit.id)"
-        :disabled="isFutureDay || habit.isStopped"
-        :is-stopped="habit.isStopped"
-        :all-habits="habits"
-        @toggle="toggleHabit(habit.id)"
-        @edit="editHabit"
-        @stop="stopHabit"
-        @delete="deleteHabit"
-        @resume="resumeHabit"
-      />
-    </ul>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { Habit, HabitEditData, DateString } from '@/types';
@@ -111,6 +68,49 @@ function resumeHabit(id: number): void {
   emit('resume', id);
 }
 </script>
+
+<template>
+  <div>
+    <p v-if="totalCount === 0" class="habit-prompt">
+      Press the <span style="font-weight: bold">+</span> button above to add
+      your first habit!
+    </p>
+    <template v-else>
+      <p class="habit-prompt">Tick the box if you completed the habit today!</p>
+      <p class="habit-summary">
+        Completed: {{ completedCount }} / {{ totalCount }} &nbsp;|&nbsp; Left:
+        {{ leftCount }}
+      </p>
+      <p
+        v-if="totalCount > 0 && completedCount === totalCount"
+        class="all-set-msg"
+      >
+        <span
+          class="material-icons"
+          style="color: #218838; vertical-align: middle"
+          >check_circle</span
+        >
+        All set for today!
+      </p>
+    </template>
+    <ul>
+      <HabitItem
+        v-for="habit in visibleHabits"
+        :key="habit.id"
+        :habit="habit"
+        :completed="completedHabits.includes(habit.id)"
+        :disabled="isFutureDay || habit.isStopped"
+        :is-stopped="habit.isStopped"
+        :all-habits="habits"
+        @toggle="toggleHabit(habit.id)"
+        @edit="editHabit"
+        @stop="stopHabit"
+        @delete="deleteHabit"
+        @resume="resumeHabit"
+      />
+    </ul>
+  </div>
+</template>
 
 <style scoped>
 .habit-prompt {

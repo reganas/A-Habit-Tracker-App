@@ -1,3 +1,19 @@
+<script setup lang="ts">
+import type { Habit } from '@/types';
+
+defineProps<{
+  habit: Habit;
+  isStopped: boolean;
+}>();
+
+defineEmits<{
+  edit: [];
+  stop: [];
+  delete: [];
+  resume: [];
+}>();
+</script>
+
 <template>
   <div class="habit-actions">
     <button
@@ -37,19 +53,3 @@
     </button>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { Habit } from '@/types';
-
-defineProps<{
-  habit: Habit;
-  isStopped: boolean;
-}>();
-
-defineEmits<{
-  edit: [];
-  stop: [];
-  delete: [];
-  resume: [];
-}>();
-</script>

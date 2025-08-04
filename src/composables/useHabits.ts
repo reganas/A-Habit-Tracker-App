@@ -121,13 +121,16 @@ export default function useHabits(
     }
 
     const habit = habits.value.find((h: Habit) => h.id === id);
-    if (habit) {
-      habit.name = name.trim();
-      success.value = 'Habit updated successfully';
-      setTimeout(() => {
-        success.value = '';
-      }, 3000);
+
+    if (!habit) {
+      return;
     }
+
+    habit.name = name.trim();
+    success.value = 'Habit updated successfully';
+    setTimeout(() => {
+      success.value = '';
+    }, 3000);
   }
 
   function stopHabit(id: number): void {
