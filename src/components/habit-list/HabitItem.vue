@@ -5,6 +5,7 @@ import type { Habit, HabitEditData } from '@/types';
 import StatusMessage from './StatusMessage.vue';
 import HabitActions from './HabitActions.vue';
 import StopDeleteConfirmation from './StopDeleteConfirmation.vue';
+import { MESSAGES, BUTTON_LABELS, STATUS_LABELS } from '@/config/constants';
 
 interface Props {
   habit: Habit;
@@ -91,15 +92,17 @@ function cancelEdit(): void {
           :disabled="!editName.trim() || isDuplicate"
           @click="trySaveEdit"
         >
-          OK
+          {{ BUTTON_LABELS.OK }}
         </button>
-        <button type="button" @click="cancelEdit">Cancel</button>
+        <button type="button" @click="cancelEdit">
+          {{ BUTTON_LABELS.CANCEL }}
+        </button>
       </div>
       <div v-if="isDuplicate" class="edit-error">
-        A habit with this name already exists.
+        {{ MESSAGES.DUPLICATE_NAME_ERROR }}
       </div>
       <div v-else-if="!editName.trim()" class="edit-error">
-        Name cannot be empty.
+        {{ MESSAGES.EMPTY_NAME_ERROR }}
       </div>
     </div>
 
@@ -129,7 +132,9 @@ function cancelEdit(): void {
     <!-- Stopped habit display -->
     <div v-else class="habit-label">
       <div class="habit-header">
-        <span class="habit-name stopped">{{ habit.name }} (Stopped)</span>
+        <span class="habit-name stopped">
+          {{ habit.name }} {{ STATUS_LABELS.STOPPED }}
+        </span>
       </div>
       <HabitActions
         :habit="habit"
@@ -145,7 +150,7 @@ function cancelEdit(): void {
     <StopDeleteConfirmation
       v-if="showDeleteModal && !showStopModal"
       :visible="showDeleteModal"
-      message="Are you sure you want to delete this habit?"
+      :message="MESSAGES.DELETE_CONFIRMATION"
       @confirm="deleteHabit"
       @cancel="showDeleteModal = false"
     />
@@ -153,7 +158,7 @@ function cancelEdit(): void {
     <StopDeleteConfirmation
       v-if="showStopModal && !showDeleteModal"
       :visible="showStopModal"
-      message="Are you sure you want to stop tracking this habit?"
+      :message="MESSAGES.STOP_CONFIRMATION"
       @confirm="stopHabit"
       @cancel="showStopModal = false"
     />

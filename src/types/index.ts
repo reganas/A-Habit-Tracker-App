@@ -9,43 +9,36 @@ export interface Habit {
   resumeDate?: string | null;
 }
 
-// Completed habits tracking by date
 export interface CompletedHabitsByDay {
   [date: string]: number[]; // Array of habit IDs completed on that date
 }
 
-// Habit store state
 export interface HabitStore {
   habits: Ref<Habit[]>;
   completedHabitsByDay: Ref<CompletedHabitsByDay>;
 }
 
-// Form data for creating/editing habits
 export interface HabitFormData {
   name: string;
   createdDate: string;
 }
 
-// Habit editing data
 export interface HabitEditData {
   id: number;
   name: string;
 }
 
-// Date navigation
 export interface DateNavigation {
   selectedDate: string;
   isFutureDay: boolean;
 }
 
-// Habit completion status
 export interface HabitCompletion {
   habitId: number;
   completed: boolean;
   date: string;
 }
 
-// UI state management
 export interface UIState {
   showAddHabitMode: boolean;
   loading: boolean;
@@ -53,7 +46,6 @@ export interface UIState {
   success: string;
 }
 
-// Component props
 export interface HabitItemProps {
   habit: Habit;
   completed: boolean;

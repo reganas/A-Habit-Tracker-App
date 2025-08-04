@@ -27,7 +27,6 @@ export default function useHabits(
       new Date().toISOString().slice(0, 10),
   );
 
-  // Keep selectedDate in sync with the route (only if route exists)
   if (route) {
     watch(
       () => route.params.date,
@@ -43,7 +42,6 @@ export default function useHabits(
     return completedHabitsByDay.value[selectedDate.value] || [];
   }
 
-  // Computed; isFutureDay
   function isFutureDay(): boolean {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -135,29 +133,35 @@ export default function useHabits(
 
   function stopHabit(id: number): void {
     const habit = habits.value.find((h: Habit) => h.id === id);
-    if (habit) {
-      habit.stopDate = selectedDate.value;
-      habit.resumeDate = null;
-      success.value = 'Habit stopped successfully';
-      setTimeout(() => {
-        success.value = '';
-      }, 3000);
+    if (!habit) {
+      return;
     }
+
+    habit.stopDate = selectedDate.value;
+    habit.resumeDate = null;
+    success.value = 'Habit stopped successfully';
+    setTimeout(() => {
+      success.value = '';
+    }, 3000);
   }
 
   function resumeHabit(id: number): void {
     const habit = habits.value.find((h: Habit) => h.id === id);
-    if (habit) {
-      habit.resumeDate = selectedDate.value;
-      success.value = 'Habit resumed successfully';
-      setTimeout(() => {
-        success.value = '';
-      }, 3000);
+
+    if (!habit) {
+      return;
     }
+
+    habit.resumeDate = selectedDate.value;
+    success.value = 'Habit resumed successfully';
+    setTimeout(() => {
+      success.value = '';
+    }, 3000);
   }
 
   function isHabitStoppedOnDate(habit: Habit, date: DateString): boolean {
     if (!habit.stopDate) return false;
+
     if (habit.resumeDate && date >= habit.resumeDate) return false;
     return date >= habit.stopDate;
   }

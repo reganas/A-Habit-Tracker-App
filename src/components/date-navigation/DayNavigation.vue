@@ -5,6 +5,7 @@ import type { DateString } from '@/types';
 import CalendarNavigation from './CalendarNavigation.vue';
 import WeekNavigator from './WeekNavigator.vue';
 import appConfig from '@/config/appConfig';
+import { BUTTON_LABELS, STATUS_LABELS, UI_LABELS } from '@/config/constants';
 
 const route = useRoute();
 const router = useRouter();
@@ -99,9 +100,11 @@ function goToToday(): void {
       :class="{ active: currentDate === today }"
       @click="goToToday"
     >
-      Today
+      {{ BUTTON_LABELS.TODAY }}
     </button>
-    <button :disabled="isNextDayFuture" @click="goToNextDay">Next</button>
+    <button :disabled="isNextDayFuture" @click="goToNextDay">
+      {{ BUTTON_LABELS.NEXT }}
+    </button>
   </nav>
   <WeekNavigator
     :current-date="currentDate"
@@ -109,7 +112,7 @@ function goToToday(): void {
     :week-starts-on="appConfig.weekStartsOn"
   />
   <div class="selected-date-display" role="status" aria-live="polite">
-    <span class="selected-date-label">Selected Date:</span>
+    <span class="selected-date-label">{{ STATUS_LABELS.SELECTED_DATE }}</span>
     <span class="selected-date-value" aria-label="Current selected date">{{
       formattedSelectedDate
     }}</span>

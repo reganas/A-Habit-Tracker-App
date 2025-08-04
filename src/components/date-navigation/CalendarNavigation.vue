@@ -17,7 +17,6 @@ const props = withDefaults(defineProps<Props>(), {
 const router = useRouter();
 const date = ref<Date>(new Date(props.currentDate));
 
-// Keep date in sync if prop changes
 watch(
   () => props.currentDate,
   (val: DateString) => {

@@ -1,10 +1,13 @@
 import { ref, watch } from 'vue';
 import type { Ref } from 'vue';
 import type { Habit, CompletedHabitsByDay, HabitStore } from '@/types';
+import { STORAGE_KEYS } from '@/config/constants';
 
 export default function useHabitStore(): HabitStore {
-  const storedHabits = localStorage.getItem('habits');
-  const storedCompleted = localStorage.getItem('completedHabitsByDay');
+  const storedHabits = localStorage.getItem(STORAGE_KEYS.HABITS);
+  const storedCompleted = localStorage.getItem(
+    STORAGE_KEYS.COMPLETED_HABITS_BY_DAY,
+  );
 
   const habits: Ref<Habit[]> = ref<Habit[]>([]);
   const completedHabitsByDay: Ref<CompletedHabitsByDay> =
