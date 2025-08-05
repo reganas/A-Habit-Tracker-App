@@ -2,13 +2,13 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import type { DateString } from '@/types';
-import appConfig from '../../config/appConfig';
+import appConfig from '../../config/appConfig.ts';
 
 type Props = {
   currentDate: DateString;
   today: DateString;
   weekStartsOn: number;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   currentDate: '',
@@ -25,7 +25,7 @@ type WeekDay = {
   isToday: boolean;
   isFuture: boolean;
   isWeekend?: boolean;
-}
+};
 
 const weekDays = computed((): WeekDay[] => {
   const isMobile = window.innerWidth <= 768;

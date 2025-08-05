@@ -4,14 +4,14 @@ import { ref, watch } from 'vue';
 import type { Habit, HabitEditData } from '@/types';
 import HabitActions from './HabitActions.vue';
 import StopDeleteConfirmation from './StopDeleteConfirmation.vue';
-import { MESSAGES, BUTTON_LABELS, STATUS_LABELS } from '@/config/constants';
+import { MESSAGES, BUTTON_LABELS, STATUS_LABELS } from '@/config/translations';
 
 type Props = {
   habit: Habit;
   completed: boolean;
   disabled: boolean;
   isStopped: boolean;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   completed: false,

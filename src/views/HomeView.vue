@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import useHabits from '../composables/useHabits';
-import useHabitStore from '../store/habitStore';
+import useHabits from '../composables/useHabits.ts';
+import useHabitStore from '../store/habitStore.ts';
 import DayNavigation from '../components/date-navigation/DayNavigation.vue';
 import HabitList from '../components/habit-list/HabitList.vue';
 

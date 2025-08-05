@@ -13,13 +13,7 @@ export default function useHabits(
   const success = ref<string>('');
   const loading = ref<boolean>(false);
 
-  // Only use route if we're in a Vue component context
-  let route: any = null;
-  try {
-    route = useRoute();
-  } catch (e) {
-    // We're in a test environment, route is not available
-  }
+  const route = useRoute();
 
   const selectedDate = ref<DateString>(
     initialDate ||
@@ -99,7 +93,7 @@ export default function useHabits(
       setTimeout(() => {
         success.value = '';
       }, 3000);
-    } catch (err) {
+    } catch {
       error.value = 'Failed to add habit';
       setTimeout(() => {
         error.value = '';

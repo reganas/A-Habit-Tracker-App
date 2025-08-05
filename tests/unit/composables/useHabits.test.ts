@@ -1,7 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ref } from 'vue';
-import useHabits from '../../../src/composables/useHabits';
+import useHabits from '../../../src/composables/useHabits.ts';
 import type { Habit, HabitStore } from '../../../src/types';
+
+// move closer to useHabits.ts file
 
 describe('useHabits - Habit Name Validation', () => {
   let habitStore: HabitStore;

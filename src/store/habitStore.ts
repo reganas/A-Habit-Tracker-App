@@ -1,7 +1,7 @@
 import { ref, watch } from 'vue';
 import type { Ref } from 'vue';
 import type { Habit, CompletedHabitsByDay, HabitStore } from '@/types';
-import { STORAGE_KEYS } from '@/config/constants';
+import { STORAGE_KEYS } from '@/config/translations.ts';
 
 export default function useHabitStore(): HabitStore {
   const storedHabits = localStorage.getItem(STORAGE_KEYS.HABITS);

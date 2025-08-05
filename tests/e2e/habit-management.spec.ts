@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
-async function addHabit(page: any, habitName: string) {
+async function addHabit(page: Page, habitName: string) {
   await page.getByRole('button', { name: 'Add new habit' }).click();
   await page.getByRole('textbox', { name: 'Habit name' }).fill(habitName);
 
@@ -60,7 +60,9 @@ test.describe('Habit Management', async () => {
     ).not.toBeVisible();
   });
 
-  test('should complete a habit by clicking checkbox', async ({ page }) => {
+  test('should complete a habit by clicking checkbox when edit button is clicked', async ({
+    page,
+  }) => {
     await addHabit(page, 'exercise');
 
     await page

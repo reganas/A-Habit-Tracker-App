@@ -4,7 +4,7 @@ type AppConfig = {
   showWeekends: boolean;
   minDate: string;
   maxHabitNameLength: number;
-}
+};
 
 const userLocale: string = navigator.language || 'en-US';
 

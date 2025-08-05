@@ -18,7 +18,6 @@ module.exports = {
     ecmaVersion: 2021,
     sourceType: 'module',
     extraFileExtensions: ['.vue'],
-    project: ['./tsconfig.json'],
   },
   settings: {
     'import/resolver': {
@@ -32,13 +31,17 @@ module.exports = {
     },
   },
   rules: {
+    'no-console': 'off',
     'no-param-reassign': 'off',
     'import/no-extraneous-dependencies': [
       'error',
       {
         devDependencies: [
           'vite.config.js',
+          'playwright.config.ts',
+          'vitest.config.ts',
           '**/*.config.js',
+          '**/*.config.ts',
           '**/*.test.js',
           '**/*.spec.js',
           '**/*.test.ts',
