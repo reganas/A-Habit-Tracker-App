@@ -9,7 +9,7 @@ type Props = {
   isFutureDay: boolean;
   currentDate: DateString;
   isHabitStoppedOnDate: (habit: Habit, date: DateString) => boolean;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   habits: () => [],

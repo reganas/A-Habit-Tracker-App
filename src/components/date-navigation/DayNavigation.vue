@@ -2,10 +2,10 @@
 import { ref, computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import type { DateString } from '@/types';
+import appConfig from '@/config/appConfig.ts';
+import { BUTTON_LABELS, STATUS_LABELS } from '@/config/translations.ts';
 import CalendarNavigation from './CalendarNavigation.vue';
 import WeekNavigator from './WeekNavigator.vue';
-import appConfig from '@/config/appConfig';
-import { BUTTON_LABELS, STATUS_LABELS } from '@/config/translations';
 
 const route = useRoute();
 const router = useRouter();
@@ -23,7 +23,6 @@ const isNextDayFuture = computed((): boolean => {
   return nextDateStr > today.value;
 });
 
-// Format the selected date for display
 const formattedSelectedDate = computed((): string => {
   const date = new Date(currentDate.value);
 
@@ -34,8 +33,7 @@ const formattedSelectedDate = computed((): string => {
       month: 'short',
       day: 'numeric',
     });
-  } catch (error) {
-    // Fallback to a simple format if locale fails
+  } catch {
     return date.toLocaleDateString('en-US', {
       weekday: 'short',
       year: 'numeric',

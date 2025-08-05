@@ -2,7 +2,7 @@
 type Props = {
   visible: boolean;
   message: string;
-}
+};
 
 defineProps<Props>();
 

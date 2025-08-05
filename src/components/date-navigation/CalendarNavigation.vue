@@ -4,11 +4,11 @@ import '@vuepic/vue-datepicker/dist/main.css';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import type { DateString } from '@/types';
-import appConfig from '../../config/appConfig';
+import appConfig from '../../config/appConfig.ts';
 
 type Props = {
   currentDate: DateString;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   currentDate: () => new Date().toISOString().slice(0, 10),

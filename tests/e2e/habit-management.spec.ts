@@ -16,7 +16,9 @@ test.describe('Habit Management', async () => {
     await page.goto('/');
   });
 
-  test('should add a new habit successfully', async ({ page }) => {
+  test('should add a new habit and display it in the habit list with correct summary', async ({
+    page,
+  }) => {
     await addHabit(page, 'exercise');
 
     await expect(page.getByText('Habit added successfully')).toBeVisible();
@@ -34,7 +36,9 @@ test.describe('Habit Management', async () => {
     await expect(page.getByText('Completed: 0 / 1 | Left:')).toBeVisible();
   });
 
-  test('should show error for duplicate habit name', async ({ page }) => {
+  test('should show an error notification when trying to add a duplicate habit name', async ({
+    page,
+  }) => {
     await addHabit(page, 'exercise');
 
     await page.getByRole('button', { name: 'Add new habit' }).click();
@@ -60,7 +64,7 @@ test.describe('Habit Management', async () => {
     ).not.toBeVisible();
   });
 
-  test('should complete a habit by clicking checkbox when edit button is clicked', async ({
+  test('should complete a habit by clicking the checkbox after opening the edit menu', async ({
     page,
   }) => {
     await addHabit(page, 'exercise');
@@ -72,7 +76,9 @@ test.describe('Habit Management', async () => {
     await expect(page.getByText('Completed: 1 / 1 | Left:')).toBeVisible();
   });
 
-  test('should edit a habit name', async ({ page }) => {
+  test('should edit a habit name and show a success notification', async ({
+    page,
+  }) => {
     await addHabit(page, 'exersise');
 
     await page.getByRole('button', { name: 'Edit exersise' }).click();
@@ -92,7 +98,9 @@ test.describe('Habit Management', async () => {
     ).not.toBeVisible();
   });
 
-  test('should stop a habit name', async ({ page }) => {
+  test('should stop a habit and display the stopped status in the habit list', async ({
+    page,
+  }) => {
     await addHabit(page, 'exercise');
 
     await page.getByRole('button', { name: 'Stop tracking exercise' }).click();
@@ -110,7 +118,9 @@ test.describe('Habit Management', async () => {
     await expect(page.getByText('exercise (Stopped)')).toBeVisible();
   });
 
-  test('should delete a habit name', async ({ page }) => {
+  test('should delete a habit and remove it from the habit list', async ({
+    page,
+  }) => {
     await addHabit(page, 'exercise');
 
     await page.getByRole('button', { name: 'Delete exercise' }).click();

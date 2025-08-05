@@ -1,6 +1,7 @@
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Habit, HabitStore, HabitEditData, DateString } from '@/types';
+import appConfig from '../config/appConfig.ts';
 
 export default function useHabits(
   habitStore: HabitStore,
@@ -76,7 +77,7 @@ export default function useHabits(
     if (error.value) {
       setTimeout(() => {
         error.value = '';
-      }, 3000);
+      }, appConfig.notificationTimeout);
       return;
     }
 
@@ -92,12 +93,12 @@ export default function useHabits(
       success.value = 'Habit added successfully';
       setTimeout(() => {
         success.value = '';
-      }, 3000);
+      }, appConfig.notificationTimeout);
     } catch {
       error.value = 'Failed to add habit';
       setTimeout(() => {
         error.value = '';
-      }, 3000);
+      }, appConfig.notificationTimeout);
     } finally {
       loading.value = false;
     }
@@ -108,7 +109,7 @@ export default function useHabits(
     if (error.value) {
       setTimeout(() => {
         error.value = '';
-      }, 3000);
+      }, appConfig.notificationTimeout);
       return;
     }
 
@@ -122,7 +123,7 @@ export default function useHabits(
     success.value = 'Habit updated successfully';
     setTimeout(() => {
       success.value = '';
-    }, 3000);
+    }, appConfig.notificationTimeout);
   }
 
   function stopHabit(id: number): void {
@@ -136,7 +137,7 @@ export default function useHabits(
     success.value = 'Habit stopped successfully';
     setTimeout(() => {
       success.value = '';
-    }, 3000);
+    }, appConfig.notificationTimeout);
   }
 
   function resumeHabit(id: number): void {
@@ -150,7 +151,7 @@ export default function useHabits(
     success.value = 'Habit resumed successfully';
     setTimeout(() => {
       success.value = '';
-    }, 3000);
+    }, appConfig.notificationTimeout);
   }
 
   function isHabitStoppedOnDate(habit: Habit, date: DateString): boolean {
@@ -176,7 +177,7 @@ export default function useHabits(
     success.value = 'Habit deleted successfully';
     setTimeout(() => {
       success.value = '';
-    }, 3000);
+    }, appConfig.notificationTimeout);
   }
 
   // toggle habit completion fo the selected day

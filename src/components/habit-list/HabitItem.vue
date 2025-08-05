@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import appConfig from '@/config/appConfig';
+import appConfig from '@/config/appConfig.ts';
 import { ref, watch } from 'vue';
 import type { Habit, HabitEditData } from '@/types';
+import {
+  MESSAGES,
+  BUTTON_LABELS,
+  STATUS_LABELS,
+} from '@/config/translations.ts';
 import HabitActions from './HabitActions.vue';
 import StopDeleteConfirmation from './StopDeleteConfirmation.vue';
-import { MESSAGES, BUTTON_LABELS, STATUS_LABELS } from '@/config/translations';
 
 type Props = {
   habit: Habit;

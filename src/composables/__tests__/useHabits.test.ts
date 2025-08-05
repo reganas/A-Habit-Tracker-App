@@ -1,11 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ref } from 'vue';
-import useHabits from '../../../src/composables/useHabits.ts';
-import type { Habit, HabitStore } from '../../../src/types';
+import useHabits from '../useHabits.ts';
+import type { Habit, HabitStore } from '../../types/index.ts';
 
-// move closer to useHabits.ts file
-
-describe('useHabits - Habit Name Validation', () => {
+describe('useHabits', () => {
   let habitStore: HabitStore;
 
   beforeEach(() => {
@@ -41,17 +39,6 @@ describe('useHabits - Habit Name Validation', () => {
     const { validateHabitName } = useHabits(habitStore, '2024-01-01');
     expect(validateHabitName('Reading')).toBe('');
     expect(validateHabitName('Meditation')).toBe('');
-  });
-});
-
-describe('Habit Completion Logic', () => {
-  let habitStore: HabitStore;
-
-  beforeEach(() => {
-    habitStore = {
-      habits: ref<Habit[]>([]),
-      completedHabitsByDay: ref({}),
-    };
   });
 
   it('should toggle habit completion for a specific date', () => {

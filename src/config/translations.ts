@@ -1,9 +1,3 @@
-// move to appConfig.ts
-export const STORAGE_KEYS = {
-  HABITS: 'habits',
-  COMPLETED_HABITS_BY_DAY: 'completedHabitsByDay',
-};
-
 export const MESSAGES = {
   DELETE_CONFIRMATION: 'Are you sure you want to delete this habit?',
   STOP_CONFIRMATION: 'Are you sure you want to stop tracking this habit?',
