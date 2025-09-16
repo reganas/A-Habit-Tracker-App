@@ -15,7 +15,7 @@
 1. Clone the repository
 
 ```bash
-git clone git@github.com:TuringCollegeSubmissions/jsteik-WD2.3.2.4.git
+git clone git@github.com:reganas/A-Habit-Tracker-App.git
 cd habit-tracker-ts
 ```
 
